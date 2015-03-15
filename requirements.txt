@@ -15,6 +15,7 @@ psycopg2==2.6
 pytz==2014.10
 raven==5.2.0
 redis==2.10.3
+requests==2.6.0
 six==1.9.0
 SQLAlchemy==0.9.9
 twilio==3.7.3

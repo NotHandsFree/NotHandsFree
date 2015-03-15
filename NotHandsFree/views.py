@@ -48,25 +48,27 @@ def create_call():
     association = Speeddial.query.filter_by(gesture=to_call).first_or_404()
     number = association.number
 
-    try:
-        tclient = TwilioRestClient(app.config['TWILIO_ACCOUNT_SID'],
-                                   app.config['TWILIO_AUTH_TOKEN'])
-
-    except Exception as e:
-        msg = 'Missing configuration variable: {0}'.format(e)
-        return jsonify({'error': msg})
+    requests.post(app.config['TWILIO_API_PROXY'], data={'phoneNumber': number})
 
     # try:
-    outbound = url_for('outbound', _external=True)
-    app.logger.info(outbound)
-    app.logger.info("%s %s" % (app.config['TWILIO_CALLER_ID'], number))
-    tclient.calls.create(to=number,
-                         from_=app.config['TWILIO_CALLER_ID'],
-                         url='http://nothandsfree.herokuapp.com/outbound')
+    #     tclient = TwilioRestClient(app.config['TWILIO_ACCOUNT_SID'],
+    #                                app.config['TWILIO_AUTH_TOKEN'])
+    #
     # except Exception as e:
-    #     app.logger.error(e)
-    #     return jsonify({'error': str(e)})
-    return jsonify({'message': 'Call incoming!'})
+    #     msg = 'Missing configuration variable: {0}'.format(e)
+    #     return jsonify({'error': msg})
+    #
+    # # try:
+    # outbound = url_for('outbound', _external=True)
+    # app.logger.info(outbound)
+    # app.logger.info("%s %s" % (app.config['TWILIO_CALLER_ID'], number))
+    # tclient.calls.create(to=number,
+    #                      from_=app.config['TWILIO_CALLER_ID'],
+    #                      url='http://nothandsfree.herokuapp.com/outbound')
+    # # except Exception as e:
+    # #     app.logger.error(e)
+    # #     return jsonify({'error': str(e)})
+    # return jsonify({'message': 'Call incoming!'})
 
 @app.route('/outbound', methods=['POST'])
 def outbound():
