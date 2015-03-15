@@ -79,10 +79,7 @@ receiver.onmessage = function(message){
                 $('#modeIcon').toggleClass("fa-flag-checkered fa-phone");
                 $('#instructions').text("We are now calling your recipient and will call you shortly");
 
-                $.post(
-                    url: '/call',
-                    data: {'gesture': data['gesture']}
-                )
+                $.getJSON('/call/' + data['gesture'])
             })
         }
     }

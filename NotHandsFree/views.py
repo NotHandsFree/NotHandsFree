@@ -5,6 +5,8 @@ from flask import render_template, jsonify, request, url_for
 from twilio import twiml
 from twilio.rest import TwilioRestClient
 
+import requests
+
 import gevent
 
 import logging
@@ -42,9 +44,10 @@ def get_gesture(gesture):
     assoc = Speeddial.query.filter_by(gesture=gesture).first_or_404()
     return jsonify(number=assoc.number)
 
-@app.route("/call", methods=['POST'])
-def create_call():
-    to_call = request.form['gesture']
+@app.route("/call/<gesture>", methods=['GET'])
+def create_call(gesture):
+    # to_call = request.form['gesture']
+    to_call = gesture
     association = Speeddial.query.filter_by(gesture=to_call).first_or_404()
     number = association.number
 
@@ -68,7 +71,7 @@ def create_call():
     # # except Exception as e:
     # #     app.logger.error(e)
     # #     return jsonify({'error': str(e)})
-    # return jsonify({'message': 'Call incoming!'})
+    return jsonify({'message': 'Call incoming!'})
 
 @app.route('/outbound', methods=['POST'])
 def outbound():
