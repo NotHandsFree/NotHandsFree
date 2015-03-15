@@ -21,6 +21,8 @@ receiver.onmessage = function(message){
     data = message['data'].replace(/'/g, '"');
     data = JSON.parse(data);
 
+    console.log(data);
+
     mode_gestures = Array(
         "newcall"
     )
