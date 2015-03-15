@@ -55,8 +55,8 @@ def create_call():
     outbound = url_for('outbound', _external=True)
     app.logger.info(outbound)
     app.logger.info("%s %s" % (app.config['TWILIO_CALLER_ID'], number))
-    tclient.calls.create(from_=app.config['TWILIO_CALLER_ID'],
-                         to=number,
+    tclient.calls.create(to=number,
+                         from_=app.config['TWILIO_CALLER_ID'],
                          url=outbound)
     # except Exception as e:
     #     app.logger.error(e)
