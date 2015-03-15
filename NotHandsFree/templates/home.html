@@ -6,6 +6,9 @@
             <h2><i id="modeIcon" class="fa fa-flag-checkered"></i> <span id="modeTitle">Select Mode</span></h2>
             <span id="instructions">Gesture your new Mode</span>
         </div>
+    </div><br />
+    <div class="row" id="contentRow">
+        
     </div>
 {% endblock %}
 
@@ -43,6 +46,32 @@ receiver.onmessage = function(message){
                 $('#modeTitle').text("New Call");
                 $('#modeIcon').toggleClass("fa-flag-checkered fa-phone");
                 $('#instructions').text("Use a gesture to select who to call");
+
+                $.getJSON('/speed', function(recvd){
+                    dial = recvd['speeddial'];
+                    console.log(dial)
+                    for (var i=0; i< dial.length/3; i=i+3) {
+                        var x = i+1;
+                        var y = i+2;
+                        $('#contentRow').html(
+                            '<div class="col-md-4" style="text-align: center;">'+
+                            '<i class="fa fa-user fa-3x"></i>'+
+                            '<p><b>' + dial[i]['gesture'] + '</b></p>'+
+                            '<p>' + dial[i]['number'] + '</p>'+
+                            '</div>'+
+                            '<div class="col-md-4" style="text-align: center;">'+
+                            '<i class="fa fa-user fa-3x"></i>'+
+                            '<p><b>' + dial[x]['gesture'] + '</b></p>'+
+                            '<p>' + dial[x]['number'] + '</p>'+
+                            '</div>'+
+                            '<div class="col-md-4" style="text-align: center;">'+
+                            '<i class="fa fa-user fa-3x"></i>'+
+                            '<p><b>' + dial[y]['gesture'] + '</b></p>'+
+                            '<p>' + dial[y]['number'] + '</p>'+
+                            '</div>'
+                        );
+                    };
+                });
 
                 mode = "newcall";
                 phase = 1;
