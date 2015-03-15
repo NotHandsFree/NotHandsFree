@@ -51,14 +51,16 @@ def create_call():
         msg = 'Missing configuration variable: {0}'.format(e)
         return jsonify({'error': msg})
 
-    try:
-        tclient.calls.create(from_=app.config['TWILIO_CALLER_ID'],
-                                   to=number,
-                                   url=url_for('outbound',
-                                               _external=True))
-    except Exception as e:
-        app.logger.error(e)
-        return jsonify({'error': str(e)})
+    # try:
+    outbound = url_for('outbound', _external=True)
+    app.logger.info(outbound)
+    app.logger.info("%s %s" % (app.config['TWILIO_CALLER_ID'], number))
+    tclient.calls.create(from_=app.config['TWILIO_CALLER_ID'],
+                         to=number,
+                         url=outbound)
+    # except Exception as e:
+    #     app.logger.error(e)
+    #     return jsonify({'error': str(e)})
     return jsonify({'message': 'Call incoming!'})
 
 @app.route('/outbound', methods=['POST'])
