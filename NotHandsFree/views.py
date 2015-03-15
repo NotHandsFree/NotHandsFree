@@ -40,7 +40,7 @@ def get_all_speeddial():
 @app.route("/speed/<gesture>")
 def get_gesture(gesture):
     assoc = Speeddial.query.filter_by(gesture=gesture).first_or_404()
-    return jsonify(number=assoc['number'])
+    return jsonify(number=assoc.number)
 
 @app.route("/call", methods=['POST'])
 def create_call():

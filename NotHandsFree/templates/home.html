@@ -37,6 +37,7 @@ receiver.onmessage = function(message){
         $('#modeTitle').text("Select Mode");
         $('#modeIcon').attr("class", "fa fa-flag-checkered");
         $('#instructions').text("Gesture your new Mode");
+        $('#contentRow').html("");
     } else if (phase === 0) {
         // We're in the Mode Select Phase
         if (mode_gestures.indexOf(data['gesture']) != -1) {
