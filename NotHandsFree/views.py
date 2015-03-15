@@ -62,7 +62,7 @@ def create_call():
     app.logger.info("%s %s" % (app.config['TWILIO_CALLER_ID'], number))
     tclient.calls.create(to=number,
                          from_=app.config['TWILIO_CALLER_ID'],
-                         url=outbound)
+                         url='http://nothandsfree.herokuapp.com/outbound')
     # except Exception as e:
     #     app.logger.error(e)
     #     return jsonify({'error': str(e)})
