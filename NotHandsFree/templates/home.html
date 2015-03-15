@@ -49,28 +49,20 @@ receiver.onmessage = function(message){
 
                 $.getJSON('/speed', function(recvd){
                     dial = recvd['speeddial'];
-                    console.log(dial)
-                    for (var i=0; i< dial.length/3; i=i+3) {
-                        var x = i+1;
-                        var y = i+2;
-                        $('#contentRow').html(
-                            '<div class="col-md-4" style="text-align: center;">'+
-                            '<i class="fa fa-user fa-3x"></i>'+
-                            '<p><b>' + dial[i]['gesture'] + '</b></p>'+
-                            '<p>' + dial[i]['number'] + '</p>'+
-                            '</div>'+
-                            '<div class="col-md-4" style="text-align: center;">'+
-                            '<i class="fa fa-user fa-3x"></i>'+
-                            '<p><b>' + dial[x]['gesture'] + '</b></p>'+
-                            '<p>' + dial[x]['number'] + '</p>'+
-                            '</div>'+
-                            '<div class="col-md-4" style="text-align: center;">'+
-                            '<i class="fa fa-user fa-3x"></i>'+
-                            '<p><b>' + dial[y]['gesture'] + '</b></p>'+
-                            '<p>' + dial[y]['number'] + '</p>'+
-                            '</div>'
-                        );
-                    };
+                    console.log(dial);
+                    output = '<div class="row">';
+
+                    for(var i = 0; i<dial.length; i++) {
+                        output += '<div class="col-md-4" style="text-align: center;">'+
+                                    '<i class="fa fa-user fa-3x"></i>'+
+                                    '<p><b>' + dial[i]['gesture'] + '</b></p>'+
+                                    '<p>' + dial[i]['number'] + '</p>'+
+                                    '</div>';
+                        if((i-2)%3 == 0) output+= "</div><div='row'>"; 
+                    }
+                    output += "</div>";    
+
+                    $('#contentRow').html(output);
                 });
 
                 mode = "newcall";
@@ -80,6 +72,12 @@ receiver.onmessage = function(message){
     } else if (phase === 1) {
         if (mode === "newcall") {
             // We're waiting for a gesture denoting who we are calling
+            $.getJSON('/speed/' + data['gesture'], function(recvd){
+                phase = 2;
+                $('#modeTitle').text("Now Calling");
+                $('#modeIcon').toggleClass("fa-flag-checkered fa-phone");
+                $('#instructions').text("We are now calling your recipient and will call you shortly");
+            })
         }
     }
 };

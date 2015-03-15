@@ -37,6 +37,11 @@ def get_all_speeddial():
         dials.append({'gesture': assoc.gesture, 'number': assoc.number})
     return jsonify(speeddial=dials)
 
+@app.route("/speed/<gesture>")
+def get_gesture(gesture):
+    assoc = Speeddial.query.filter_by(gesture=gesture).first_or_404()
+    return jsonify(number=assoc['number'])
+
 @app.route("/call", methods=['POST'])
 def create_call():
     to_call = request.form['gesture']
@@ -72,6 +77,7 @@ def outbound():
 
     with response.dial() as dial:
         dial.number("+447415722341")
+        dial.conference("testconference")
     return str(response)
 
 @app.route("/input", methods=['POST'])
